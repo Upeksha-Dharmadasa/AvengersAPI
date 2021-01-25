@@ -1,6 +1,20 @@
 const express = require ('express');
+const mongoose = require ('mongoose')
 const authentication = require ('./middleware/authentication');
 const emailsending = require ('./middleware/emailsending');
+
+mongoose
+    .connect ('mongodb: //localhost/avengersdb', 
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    })
+
+    .then(() =>console.log ("Connected to DB successfully..."))
+    .catch((err) => console.log ("Error has occured while connecting to server...", err)
+    
+    );
+
 const avengers = require ("./routes/avengers")
 const home = require ('./routes/home')
 const app = express();
@@ -10,9 +24,7 @@ app.use (express.json()); //used express inbuilt mildware to parse JSON
 app.use (authentication);
 app.use (emailsending);
 app.use ("/api/avengers", avengers);
-app.use ("/api/avengers", home);
-
-
+app.use ("/", home);
 
 
 app.listen(PORT, () => {
