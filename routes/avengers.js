@@ -15,7 +15,7 @@ router.get ("/api/avengers", (req, res) => {
 })
 
 // get by id
-router.get ("/api/avengers/:id", (req, res) => {
+router.get ("/:id", (req, res) => {
     
     //send avenger details for the requested id
     let requestedID = req.params.id;
@@ -31,7 +31,7 @@ router.get ("/api/avengers/:id", (req, res) => {
 })
 
 // update avenger
-router.put ("/api/avengers/:id", (req, res) => 
+router.put ("/:id", (req, res) => 
 {
 
     let requestedID = req.params.id;
@@ -49,7 +49,7 @@ router.put ("/api/avengers/:id", (req, res) =>
 }); 
 
 // Create new avenger
-router.post ("/api/avengers", (req, res) => 
+router.post ("/", (req, res) => 
 {
     if(!req.body.name)
     {
@@ -67,7 +67,7 @@ router.post ("/api/avengers", (req, res) =>
 })
 
 // Delete
-router.delete ("/api/avengers/:id", (req, res) => 
+router.delete ("/:id", (req, res) => 
 {
     let avenger = avengerArray.find ((b) => b.id == req.params.id);
     if (!avenger)
