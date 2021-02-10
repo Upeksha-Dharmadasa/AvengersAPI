@@ -3,15 +3,15 @@ const mongoose = require ('mongoose')
 const authentication = require ('./middleware/authentication');
 const emailsending = require ('./middleware/emailsending');
 
+// Create the connection String
 mongoose
-    .connect ('mongodb: //localhost/avengersdb', 
-    {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    })
+    .connect ('mongodb://localhost/avengersdb', 
+    { 
+        useNewUrlParser: true, 
+        useUnifiedTopology: true }) 
 
     .then(() =>console.log ("Connected to DB successfully..."))
-    .catch((err) => console.log ("Error has occured while connecting to server...", err)
+    .catch((err) => console.log ("Error has occured while connecting to Database...", err)
     
     );
 
@@ -30,3 +30,4 @@ app.use ("/", home);
 app.listen(PORT, () => {
     console.log ("Started listening on port" + PORT);
 })
+ 

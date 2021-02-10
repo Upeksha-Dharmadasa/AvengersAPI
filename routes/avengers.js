@@ -1,5 +1,6 @@
 const express = require ("express");
 const router = express.Router();
+const Avenger = require ("../models/avenger") // Import the model created for the schema
 
 let avengerArray = 
 [
