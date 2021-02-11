@@ -17,18 +17,20 @@ const avengerSchema = new mongoose.Schema
     movies:
     { 
         type:[String],
-        enum: ["Infinity War", "End Game", "Iron man 1", "Black Widow", "Thor", "The Winter Soldier "],
+        enum: ["Infinity War", "End Game", "Iron man 1", "Black Widow", "Thor", "The Winter Soldier"],
         required: true
     },
 
     likeCount: Number,
 
     imageUrl:
-    {
+   {
         type: String,
-        default: "Some default URL"
+        default: "https://static.wikia.nocookie.net/disney/images/4/4a/Thor_Odinson_TDW_poster_textless.jpg/revision/latest?cb=20130615173905"
+        //"https://i.pinimg.com/originals/d9/a0/dc/d9a0dc5d4ae0533582d36062d904607b.jpg"
+        //"https://i.pinimg.com/originals/ea/23/7e/ea237ec1ed1bef9fceaa3db8b4e17b5f.jpg"
     },
-
+    
     deceased: Boolean,
 
 });

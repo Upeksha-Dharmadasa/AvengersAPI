@@ -10,17 +10,27 @@ let avengerArray =
     {id: 4, name: "Black widow"}
 ];
 
-// get all details
-router.get ("/api/avengers", (req, res) => {
-    res.send (avengerArray)
-})
+// get all details from DB
+router.get ("/", async (req, res) => 
+{
+    try
+    {
+        let avengers = await Avenger.find().countDocuments();
+        return res.send (avengers.toString())
+    }
+    catch (ex)
+    {
+        return res.status(500).send(ex.message);
+    }
+});
 
 // get by id
-router.get ("/:id", (req, res) => {
-    
+router.get ("/:id", (req, res) => 
+{ 
     //send avenger details for the requested id
     let requestedID = req.params.id;
     let avenger = avengerArray.find (avenger => avenger.id == requestedID);
+ 
     
     if (!avenger)
     {
@@ -31,41 +41,71 @@ router.get ("/:id", (req, res) => {
     res.send (avenger);
 })
 
-// update avenger
-router.put ("/:id", (req, res) => 
+// update avenger DB
+router.put ("/:id", async (req, res) => 
 {
+    //let avenger = avengerArray.find (avenger => avenger.id == requestedID);
 
-    let requestedID = req.params.id;
-    let avenger = avengerArray.find (avenger => avenger.id == requestedID);
+   let requestedID = req.params.id;
+   let avenger = await Avenger.findById(requestedID);
+
     if (!avenger)
     {
         return res
         .status (404)
-        .send ("Avenger you are looking for update is not available")
+        .send ("Record you are looking for update is not available")
     }
 
-    avenger.name = req.body.name;
+    avenger.set({ likeCount: req.body.likeCount });
+    avenger = await avenger.save();
+
     return res.send (avenger)
 
 }); 
 
 // Create new avenger
-router.post ("/", (req, res) => 
+router.post ("/", async (req, res) => 
 {
     if(!req.body.name)
     {
         return res.status (400).send ("Why you not send all the values in the request...?")
     }
+    /*
     let newAvenger =  
     {
         id: avengerArray.length + 1,
         name: req.body.name,  
     };
+    */
 
-    avengerArray.push (newAvenger);
-    return res.send (newAvenger);
+    // Create directly to the database
+    let newavenger = new Avenger({
+        name: req.body.name,
+        birthname: req.body.birthname,
+        movies: req.body.movies,
+        likeCount: req.body.likeCount,
+        imageUrl: req.body.imgUrl,
+        deceased:  req.body.deceased,
+      });
     
-})
+      // Add to the database
+      try
+      {
+        newavenger = await newavenger.save();
+        return res.send(newavenger);
+      }
+      
+      catch(err)
+      {
+          return res.status(500).send(err.message);
+      }
+
+    /*
+    avengerArray.push (newAvenger);
+    return res.send (newAvenger); 
+    */
+    
+});
 
 // Delete
 router.delete ("/:id", (req, res) => 
